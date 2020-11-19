@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <div class="container justify-content-center py-5 col-md-4">
+            <img src="" width="250px" class="img-fluid mx-auto d-block">
+            <h3 class="text-center text-primary">Welcome Admin</h3>
+            <p class="text-center">Please Login</p>
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status" id="spinner" style="display: none;">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            <form>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="email">Password</label>
+                    <input type="password" class="form-control" id="password">
+                </div>
+                <button class="btn btn-primary w-100" id="loginBtn" type="button" onclick="login()">Login</button>
+            </form>
+            <p id="error" class="text-center text-danger"></p>
+            <a class="text-center my-2" href="#">Forgot password?</a>
+        </div>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-firestore.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
+        <script>
+            function login() {
+                var firebaseConfig = {
+                    apiKey: "AIzaSyB-EEYFZZe4eNJdzQHkttvK7FSNmDKKnN8",
+                    authDomain: "my-league-app.firebaseapp.com",
+                    databaseURL: "https://my-league-app.firebaseio.com",
+                    projectId: "my-league-app",
+                    storageBucket: "my-league-app.appspot.com",
+                    messagingSenderId: "978221051084",
+                    appId: "1:978221051084:web:bfbfc817d28f122e2aa669"
+                };
+                // Initialize Firebase
+                //firebase.initializeApp(firebaseConfig);
+
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+                console.log("All good");
+
+                document.getElementById("spinner").style.display = "block";
+                document.getElementById("loginBtn").classList.add("disabled");
+
+                firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+
+                    // Handle Errors here.
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    //alert("error: " + error);
+                    document.getElementById("spinner").style.display = "none";
+                    document.getElementById("loginBtn").classList.remove("disabled");
+                    document.getElementById("error").innerHTML = errorMessage;
+                });
+            }
+
+            function initializeApp() {
+                var firebaseConfig = {
+                    apiKey: "AIzaSyB-EEYFZZe4eNJdzQHkttvK7FSNmDKKnN8",
+                    authDomain: "my-league-app.firebaseapp.com",
+                    databaseURL: "https://my-league-app.firebaseio.com",
+                    projectId: "my-league-app",
+                    storageBucket: "my-league-app.appspot.com",
+                    messagingSenderId: "978221051084",
+                    appId: "1:978221051084:web:bfbfc817d28f122e2aa669"
+                };
+                // Initialize Firebase
+                firebase.initializeApp(firebaseConfig);
+
+                //Handle Account Status
+                firebase.auth().onAuthStateChanged(user => {
+                    if(user) {
+                        console.log("User is logged in already: " + user.email);
+                        window.location = 'players.html'; //After successful login, user will be redirected to home.html
+                    } else {
+                        //alert("User aint logged in yet");
+                    }
+                });
+            }
+
+            window.onload = function() {
+                initializeApp();
+            };
+        </script>
+    </body>
+</html>
